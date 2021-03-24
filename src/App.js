@@ -12,23 +12,135 @@ import MoviesAPI from './components/movies/moviesapi.js';
 
 class App extends React.Component {
 
-  state = {
-    movies : [],
-    moviesAPI: []
-  }
 
   constructor(props) {
     super(props)
     this.state = {
-      inputValue: '',
+      inputValueState: 'spider man',
       movies : [],
-      moviesAPI: false
+      currentPageState: 1,
+      pagevalue: 0
     }
   }
 
-  handleKeyDown(e) {
 
+
+  state = {
+    inputValueState: 'spider man',
+    movies : [],
+    currentPageState: 1
+  }
+  
+
+  componentDidMount(){
+
+    fetch('https://www.omdbapi.com/?s=' + this.state.inputValueState +'&apikey=81f86f7d&type=movie&page=' + this.state.currentPageState, {
+        method: 'GET',
+        })
+        .then(response => response.json())
+        .then((movies) => {
+            //MovieDataAPI.push(movies)
+            //console.log(movies)
+
+            console.log(movies)
+
+            if(movies.Response !== "False"){
+  
+              let posts = movies.Search;
+  
+              let movieData = []
     
+              posts.forEach(element => {
+    
+                movieData.push(element)
+                  
+              });
+    
+              this.setState({
+                //currentPageState: currentPage,
+                movies:movieData
+              })
+  
+            }
+
+        });
+
+  }
+
+
+  reset(e){
+    this.setState({
+      moviesAPI: []
+    })
+  }
+
+
+
+  updateInputValue(e){
+
+    let currenPage = this.state.currentPageState;
+    let inputValue = "";
+    inputValue += e.target.value;
+
+    this.setState({
+      inputValueState: inputValue,
+      currentPageState: 1
+    }, () => {
+      this.fetchPosts();
+  });
+
+  }
+  
+
+  pagination(e){
+      this.setState({currentPageState: this.state.currentPageState + 1}, () => {
+        this.fetchPosts();
+    });
+
+  }
+
+ 
+
+  fetchPosts(){
+
+    fetch('https://www.omdbapi.com/?s=' + this.state.inputValueState +'&apikey=81f86f7d&type=movie&page=' + this.state.currentPageState, {
+      method: 'GET',
+      })
+      .then(response => response.json())
+      .then((movies) => {
+          //MovieDataAPI.push(movies)
+
+          console.log(movies)
+
+          if(movies.Response !== "False"){
+
+            let posts = movies.Search;
+
+            let movieData = []
+  
+            posts.forEach(element => {
+  
+              movieData.push(element)
+                
+            });
+  
+            this.setState({
+              //currentPageState: currentPage,
+              movies:movieData
+            })
+
+          }
+
+       
+         
+
+      });
+
+
+  }
+
+/*
+  handleKeyDown(e) {
 
     let inputValue = e.target.value;
 
@@ -61,33 +173,10 @@ class App extends React.Component {
 
   }
 
-  componentDidMount(){
+  */
 
-    fetch('https://www.omdbapi.com/?s=abc&apikey=81f86f7d&type=movie', {
-        method: 'GET',
-        })
-        .then(response => response.json())
-        .then((movies) => {
-            //MovieDataAPI.push(movies)
-            console.log(movies)
+ 
 
-            let posts = movies.Search;
-
-            let movieData = []
-
-            posts.forEach(element => {
-
-              movieData.push(element)
-                
-            });
-
-           
-
-            this.setState({movies:movieData})
-
-        });
-
-  }
 
   render(){
 
@@ -104,13 +193,19 @@ class App extends React.Component {
 
          <div className="container px-4">
 
-           <input type="text" onChange={(e) => this.handleKeyDown(e)} placeholder="Suchbegriff..." className="w-50 p-1"  />
+           <input type="text" value={this.state.inputValue} onChange={/*(e) => this.handleKeyDown(e),*/ (e) => this.updateInputValue(e)} placeholder="Suchbegriff..." className="w-50 p-1"  />
 
          </div>
 
         </div>
 
-        {(!this.state.moviesAPI) ? <MoviesAPI data={this.state.movies} /> : <MoviesAPI data={this.state.moviesAPI} /> }
+        {(!this.state.movies) ? '': <MoviesAPI data={this.state.movies} /> }
+
+        <button onClick={e => this.reset()}>Reset</button>
+
+        <button>Back</button>
+
+        <button onClick={e => this.pagination(this)}>Next</button>
 
 
        <div className="container">
@@ -125,13 +220,6 @@ class App extends React.Component {
       );
 
   }
-
-
-  
-
-
-
-
 
   
 }
