@@ -19,11 +19,11 @@ class App extends React.Component {
       inputValueState: 'spider man',
       movies : [],
       currentPageState: 1,
-      pagevalue: 0
+      pagevalue: 0,
+      totalResultsState: '',
+      currentOptionsState: []
     }
   }
-
-
 
   state = {
     inputValueState: 'spider man',
@@ -55,10 +55,17 @@ class App extends React.Component {
                 movieData.push(element)
                   
               });
+
+              let options = [];
+              for(let i = 0; i <= movies.totalResults; i++){
+                options.push(i);
+               }
     
               this.setState({
                 //currentPageState: currentPage,
-                movies:movieData
+                movies:movieData,
+                totalResultsState: movies.totalResults,
+                currentOptionsState: options
               })
   
             }
@@ -67,10 +74,9 @@ class App extends React.Component {
 
   }
 
-
   reset(e){
     this.setState({
-      moviesAPI: []
+      movies: []
     })
   }
 
@@ -91,10 +97,20 @@ class App extends React.Component {
   }
   
 
-  pagination(e){
+  pagination(value){
+
+    if(value === "plus"){
       this.setState({currentPageState: this.state.currentPageState + 1}, () => {
         this.fetchPosts();
-    });
+      });
+    }
+
+    if(value === "minus"){
+      this.setState({currentPageState: this.state.currentPageState - 1}, () => {
+        this.fetchPosts();
+      });
+    }
+   
 
   }
 
@@ -107,7 +123,6 @@ class App extends React.Component {
       })
       .then(response => response.json())
       .then((movies) => {
-          //MovieDataAPI.push(movies)
 
           console.log(movies)
 
@@ -122,21 +137,27 @@ class App extends React.Component {
               movieData.push(element)
                 
             });
+
+
+            let options = [];
+            for(let i = 1; i <= movies.totalResults; i++){
+              options.push(i);
+             }
   
             this.setState({
               //currentPageState: currentPage,
-              movies:movieData
+              movies:movieData,
+              totalResultsState: movies.totalResults,
+              currentOptionsState: options
             })
 
           }
-
-       
-         
 
       });
 
 
   }
+
 
 /*
   handleKeyDown(e) {
@@ -175,8 +196,6 @@ class App extends React.Component {
   */
 
  
-
-
   render(){
 
     return (
@@ -190,22 +209,66 @@ class App extends React.Component {
 
         <div className="filterAPI my-4">
 
-         <div className="container px-4">
+         <div className="container px-md-4">
 
-           <input type="text" value={this.state.inputValue} onChange={/*(e) => this.handleKeyDown(e),*/ (e) => this.updateInputValue(e)} placeholder="Suchbegriff..." className="w-50 p-1"  />
+           <input type="text" value={this.state.inputValue} onChange={/*(e) => this.handleKeyDown(e),*/ (e) => this.updateInputValue(e)} placeholder="Suchbegriff..." className="w-100 w-md-50 p-1"  />
 
          </div>
 
         </div>
 
+     
+        {/*
+        
+        <button onClick={e => this.selectMenu()}>test</button>
+
+        */}
+
+       <div className="mb-2">
+
+       Seite:
+
+          <select className="form-control d-inline-block w-auto">
+
+          {this.state.currentOptionsState.map((item, index) => (
+          <option>
+              {item}
+          </option>
+          ))}
+
+
+          </select>
+
+       </div>
+        
+
         {(!this.state.movies) ? '': <MoviesAPI data={this.state.movies} /> }
 
-        <button onClick={e => this.reset()}>Reset</button>
+        <div className="my-2">TotalResults: {this.state.totalResultsState}</div>
 
-        <button>Back</button>
+        <div className="my-2">CurrentPage: {this.state.currentPageState}</div>
 
-        <button onClick={e => this.pagination(this)}>Next</button>
+          <div className="row">
 
+              <div className="col-4">
+
+                {this.state.currentPageState > 1 ? <button className="btn btn-primary" onClick={e => this.pagination("minus")}>&#8249; <span className="d-none d-mdblock">Back</span></button> : <button className="btn btn-primary" disabled>&#8249; <span className="d-none d-mdblock">Back</span></button> }
+
+              </div>
+
+              <div className="col-4">
+
+              <button className="btn btn-primary" onClick={e => this.reset()}>Clear</button>
+
+              </div>
+
+              <div className="col-4">
+
+              <button className="btn btn-primary" onClick={e => this.pagination("plus")}><span className="d-none d-mdblock">Next</span> &#8250;</button>
+
+              </div>
+
+          </div>
 
        <div className="container">
          <hr className="my-4" />
