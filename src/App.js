@@ -226,12 +226,12 @@ class App extends React.Component {
 
        <div className="mb-2">
 
-       Seite:
+           Seite:
 
           <select className="form-control d-inline-block w-auto">
 
           {this.state.currentOptionsState.map((item, index) => (
-          <option>
+           <option key={index}>
               {item}
           </option>
           ))}
