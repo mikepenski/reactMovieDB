@@ -8,7 +8,7 @@ import Header from './components/header/header.js';
 import MovieData from './components/movies/moviedata.js';
 import Movies from './components/movies/movies.js';
 import MoviesAPI from './components/movies/moviesapi.js';
-import Filter from './components/filter/filterAPI.js';
+//import Filter from './components/filter/filterAPI.js';
 
 class App extends React.Component {
 
@@ -28,6 +28,8 @@ class App extends React.Component {
 
   handleKeyDown(e) {
 
+    
+
     let inputValue = e.target.value;
 
     this.setState({ inputValue: inputValue })
@@ -38,7 +40,7 @@ class App extends React.Component {
         .then(response => response.json())
         .then((moviesAPI) => {
             
-            if(moviesAPI.Response != "False"){
+            if(moviesAPI.Response !== "False"){
 
                 let posts = moviesAPI.Search;
 
