@@ -1,8 +1,6 @@
 //import React, { useState } from 'react';
 //import './card.css';
 
-import starFull from '../../star_full.svg';
-
 const Card = (props) => {
 
     //let rating = props.data.rate;
@@ -13,7 +11,7 @@ const Card = (props) => {
 
                 <div className="card-body">
 
-                {props.data.Poster == "N/A" ? <div className="py-5">No Poster</div> : <a href={"https://www.imdb.com/title/" + imdbID} target="_blank" className="cover"><img src={props.data.Poster} className="mb-2" width="250" /></a> }
+                {props.data.Poster === "N/A" ? <div className="py-5">No Poster</div> : <a href={"https://www.imdb.com/title/" + imdbID} target="_blank" className="cover"><img src={props.data.Poster} className="mb-2" width="250" /></a> }
 
                 <div className="title mb-1">{Title}</div>
                 <div className="year mb-1">{Year}</div>

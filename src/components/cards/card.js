@@ -1,14 +1,14 @@
 //import React, { useState } from 'react';
 //import './card.css';
 
-import starFull from '../../star_full.svg';
-import Rating from '../rating/rating.js';
+//import starFull from '../../star_full.svg';
+//import Rating from '../rating/rating.js';
 
 const Card = (props) => {
 
     //let rating = props.data.rate;
 
-    const { title, year, director, duration, rate} = props;
+    //const { title, year, director, duration, rate} = props;
 
     return <div className="card h-100 bg-dark text-white">
 
