@@ -4,8 +4,6 @@ import starHalfIcon from '../../star_half.svg';
 
 const Rating = (props) => {
 
-    console.log(props.stars)
-
     const hasHalfStar = (props.stars % 1 !== 0);
     const stars = parseInt(props.stars);
 
@@ -15,8 +13,6 @@ const Rating = (props) => {
 
         let star = starFullIcon;
 
-        //if(i > rating - 1){
-
         if(i == stars && hasHalfStar){
             star = starHalfIcon;
         } else if (i > stars - 1){
@@ -25,7 +21,6 @@ const Rating = (props) => {
 
         starsArray.push(<img key={i} src={star} style={{ width: "auto", height: "20px" }} />)
     }
-
 
     /*
     
