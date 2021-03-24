@@ -2,7 +2,7 @@
 //import './card.css';
 
 //import starFull from '../../star_full.svg';
-//import Rating from '../rating/rating.js';
+import Rating from '../rating/rating.js';
 
 const Card = (props) => {
 
