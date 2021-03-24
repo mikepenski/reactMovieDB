@@ -10,7 +10,7 @@ const Header = () => {
               <nav id="main-menu">
                   <ul>
                       <li>
-                          <a href="#">Home</a>
+                          <span>Home</span>
                       </li>
                   </ul>
               </nav>
