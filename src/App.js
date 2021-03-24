@@ -78,7 +78,6 @@ class App extends React.Component {
 
   updateInputValue(e){
 
-    let currenPage = this.state.currentPageState;
     let inputValue = "";
     inputValue += e.target.value;
 
