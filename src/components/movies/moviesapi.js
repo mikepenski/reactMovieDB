@@ -12,7 +12,7 @@ const MoviesAPI = (props) => {
                      <div className="row">
 
                         {props.data.map((item, index) => {
-                        return  <Col key={index + "col"} class="col-md-3 mb-4">
+                        return  <Col key={index + "col"} class="col-12 col-md-3 mb-4">
                                     <CardAPI key={index} data={item} />
                                 </Col>
                         })}

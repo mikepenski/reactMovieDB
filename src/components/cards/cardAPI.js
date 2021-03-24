@@ -7,18 +7,19 @@ const Card = (props) => {
 
     //let rating = props.data.rate;
 
+    const { Title, Year, imdbID } = props.data;
+
     return <div className="card h-100 bg-dark text-white">
 
                 <div className="card-body">
 
+                {props.data.Poster == "N/A" ? <div className="py-5">No Poster</div> : <a href={"https://www.imdb.com/title/" + imdbID} target="_blank" className="cover"><img src={props.data.Poster} className="mb-2" width="250" /></a> }
 
-                {props.data.Poster == "N/A" ? <div className="py-5">No Poster</div> : <img src={props.data.Poster} className="mb-2" width="250" /> }
+                <div className="title mb-1">{Title}</div>
+                <div className="year mb-1">{Year}</div>
+                <div className="year mb-1">imdb ID: {imdbID}</div>
 
-                <div className="title mb-1">{props.data.Title}</div>
-                <div className="year mb-1">{props.data.Year}</div>
-                <div className="year mb-1">imdb ID: {props.data.imdbID}</div>
-
-                <a href={"https://www.imdb.com/title/" + props.data.imdbID} target="_blank">more Infos</a>
+                <a href={"https://www.imdb.com/title/" + imdbID} target="_blank">more Infos</a>
               
                 </div>
 

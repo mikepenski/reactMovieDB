@@ -96,8 +96,6 @@ class App extends React.Component {
     
         <h1 className="mt-4 pt-5 pb-4">movieDB</h1>
 
-
-
         <h3 className="mb-4">Data from api</h3>
 
         <div className="filterAPI my-4">

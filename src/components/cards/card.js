@@ -8,9 +8,11 @@ const Card = (props) => {
 
     //let rating = props.data.rate;
 
+    const { title, year, director, duration, rate} = props;
+
     return <div className="card h-100 bg-dark text-white">
 
-               
+       
                 <div className="card-body">
 
                 <div className="title mb-1">{props.data.title ? props.data.title : 'Title Lorem Ipsum'}</div>

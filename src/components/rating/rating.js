@@ -4,19 +4,45 @@ import starHalfIcon from '../../star_half.svg';
 
 const Rating = (props) => {
 
-    let starsArray = [];
+    console.log(props.stars)
+
+    const hasHalfStar = (props.stars % 1 !== 0);
+    const stars = parseInt(props.stars);
+
+    const starsArray = [];
+ 
+    for (let i = 0; i < 10; i++) {
+
+        let star = starFullIcon;
+
+        //if(i > rating - 1){
+
+        if(i == stars && hasHalfStar){
+            star = starHalfIcon;
+        } else if (i > stars - 1){
+            star = starEmptyIcon;
+        }
+
+        starsArray.push(<img key={i} src={star} style={{ width: "auto", height: "20px" }} />)
+    }
 
 
-     /*
-    * calc the half stars
-    */
+    /*
+    
+    old one 
+
+     let starsArray = [];
+
+     
+    // calc the half stars
+    
      let myrating = props.stars;
      let ratingDecimal = myrating.toString().slice(2, 3);
 
   
-    /*
-    * if rating have half -1 full star
-    */
+    
+    // if rating have half -1 full star
+    
     let stars; 
     if(ratingDecimal > 0){
         stars = parseInt(props.stars) -1;
@@ -24,10 +50,8 @@ const Rating = (props) => {
         stars = parseInt(props.stars);
     }
 
-    /*
-    * loop for full stars
-    */
-
+    // loop for full stars
+    
     for(let i = 0; i < stars; i++){
 
         let fullStar = (
@@ -36,9 +60,8 @@ const Rating = (props) => {
           starsArray.push(fullStar);
     }
 
-    /*
-    * add the half star to array
-    */
+    
+    // add the half star to array
 
     if(ratingDecimal > 0){
         let halfStar = (
@@ -47,9 +70,8 @@ const Rating = (props) => {
         starsArray.push(halfStar);
     }
 
-    /*
-    * calc the empty stars and loop for empty stars 
-    */
+    
+    // calc the empty stars and loop for empty stars 
 
     let emptyStars = 10 - props.stars;
 
@@ -60,12 +82,24 @@ const Rating = (props) => {
           starsArray.push(emptyStar);
     }
 
+    */
 
     //console.log(starsArray);
     
-    return <div className="rating">
+    /*
+
+      return <div className="rating">
             {starsArray.map((item, index) => item)}
          </div>
+
+    */
+
+    return (
+        <div className="rating">
+        {starsArray.map(item => item)}
+    </div>
+
+    );
     }
   
 export default Rating;

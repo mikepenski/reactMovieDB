@@ -7,7 +7,6 @@ class Filter extends React.Component {
         movies : []
       }
 
-    
       render(){
     
         return (''
@@ -16,7 +15,6 @@ class Filter extends React.Component {
           );
     
       }
-
 
 }
 
