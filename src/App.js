@@ -34,7 +34,7 @@ class App extends React.Component {
 
     this.setState({ inputValue: inputValue })
 
-    fetch('http://www.omdbapi.com/?s='+ inputValue +'&apikey=81f86f7d&type=movie&page=1', {
+    fetch('https://www.omdbapi.com/?s='+ inputValue +'&apikey=81f86f7d&type=movie&page=1', {
         method: 'GET',
         })
         .then(response => response.json())
@@ -63,7 +63,7 @@ class App extends React.Component {
 
   componentDidMount(){
 
-    fetch('http://www.omdbapi.com/?s=abc&apikey=81f86f7d&type=movie', {
+    fetch('https://www.omdbapi.com/?s=abc&apikey=81f86f7d&type=movie', {
         method: 'GET',
         })
         .then(response => response.json())
