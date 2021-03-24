@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+//import React, {useState} from 'react';
 import CardAPI from '../cards/cardAPI.js';
-import Row from '../bootstrap/row.js';
+//import Row from '../bootstrap/row.js';
 import Col from '../bootstrap/col.js';
 
 

@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
+//import React, { Component } from 'react';
 //import './header.css';
 
 const Header = () => {
     return <header className="shadow">
                 <div className="container">
-                <a href="#" className="logo">
+                <div className="logo">
                     MovieDB
-                </a>
+                </div>
               <nav id="main-menu">
                   <ul>
                       <li>
