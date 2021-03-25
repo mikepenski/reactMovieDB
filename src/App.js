@@ -21,7 +21,8 @@ class App extends React.Component {
       currentPageState: 1,
       pagevalue: 0,
       totalResultsState: '',
-      currentOptionsState: []
+      currentOptionsState: [],
+      totalPagesState: ''
     }
   }
 
@@ -42,7 +43,7 @@ class App extends React.Component {
             //MovieDataAPI.push(movies)
             //console.log(movies)
 
-            console.log(movies)
+            //console.log(movies)
 
             if(movies.Response !== "False"){
   
@@ -57,15 +58,17 @@ class App extends React.Component {
               });
 
               let options = [];
-              for(let i = 0; i <= movies.totalResults; i++){
+              for(let i = 1; i <= Math.ceil(movies.totalResults/10); i++){
                 options.push(i);
                }
+
     
               this.setState({
                 //currentPageState: currentPage,
                 movies:movieData,
                 totalResultsState: movies.totalResults,
-                currentOptionsState: options
+                currentOptionsState: options,
+                totalPagesState: Math.ceil(movies.totalResults/10)
               })
   
             }
@@ -100,17 +103,26 @@ class App extends React.Component {
   pagination(value){
 
     if(value === "plus"){
-      this.setState({currentPageState: this.state.currentPageState + 1}, () => {
+      this.setState({currentPageState: parseInt(this.state.currentPageState )+ 1}, () => {
         this.fetchPosts();
       });
     }
 
     if(value === "minus"){
-      this.setState({currentPageState: this.state.currentPageState - 1}, () => {
+      this.setState({currentPageState: parseInt(this.state.currentPageState ) - 1}, () => {
         this.fetchPosts();
       });
     }
    
+
+  }
+
+  setPage(e){
+    this.setState({
+      currentPageState: e.target.value
+    }, () => {
+      this.fetchPosts();
+    });
 
   }
 
@@ -140,15 +152,16 @@ class App extends React.Component {
 
 
             let options = [];
-            for(let i = 1; i <= movies.totalResults; i++){
+            for(let i = 1; i <= Math.ceil(movies.totalResults/10); i++){
               options.push(i);
              }
-  
+
             this.setState({
               //currentPageState: currentPage,
               movies:movieData,
               totalResultsState: movies.totalResults,
-              currentOptionsState: options
+              currentOptionsState: options,
+              totalPagesState: Math.ceil(movies.totalResults/10)
             })
 
           }
@@ -167,6 +180,8 @@ class App extends React.Component {
              {/*
         
         <button onClick={e => this.selectMenu()}>test</button>
+
+        https://blog.bitsrc.io/build-a-simple-modal-component-with-react-16decdc111a6
 
         */}
 
@@ -193,12 +208,12 @@ class App extends React.Component {
 
               <div className="d-flex align-items-center">
 
-                <span className="pr-4">Seite:</span>
+                <span className="pr-4">Seite(n):</span>
 
-                <select className="form-control d-inline-block w-auto">
-
+                <select onChange={e => this.setPage(e)} className="form-control d-inline-block w-auto" value={this.state.currentPageState}>
+´´
                   {this.state.currentOptionsState.map((item, index) => (
-                  <option key={index}>
+                  <option key={index} value={index + 1} >
                     {item}
                   </option>
                   ))}
@@ -221,7 +236,7 @@ class App extends React.Component {
 
         <div className="my-2">TotalResults: {this.state.totalResultsState}</div>
 
-        <div className="my-2">CurrentPage: {this.state.currentPageState}</div>
+        <div className="my-2">Page: {this.state.currentPageState} / {this.state.totalPagesState}</div>
 
           <div className="row">
 
