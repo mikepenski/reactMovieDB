@@ -1,7 +1,4 @@
 //import React, { useState } from 'react';
-//import './card.css';
-
-//import starFull from '../../star_full.svg';
 import Rating from '../rating/rating.js';
 
 const Card = (props) => {

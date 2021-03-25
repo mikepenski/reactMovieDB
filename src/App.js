@@ -158,88 +158,63 @@ class App extends React.Component {
 
   }
 
-
-/*
-  handleKeyDown(e) {
-
-    let inputValue = e.target.value;
-
-    this.setState({ inputValue: inputValue })
-
-    fetch('https://www.omdbapi.com/?s='+ inputValue +'&apikey=81f86f7d&type=movie&page=1', {
-        method: 'GET',
-        })
-        .then(response => response.json())
-        .then((moviesAPI) => {
-            
-            if(moviesAPI.Response !== "False"){
-
-                let posts = moviesAPI.Search;
-
-                let movieAPIData = []
-    
-                posts.forEach(element => {
-    
-                  movieAPIData.push(element)
-                    
-                });
-
-                this.setState({moviesAPI:movieAPIData})
-
-            }
-
-
-        });
-
-  }
-
-  */
-
- 
   render(){
 
     return (
+
       <div className="App">
-    
-        <Header />
-    
-        <h1 className="mt-4 pt-5 pb-4">movieDB</h1>
 
-        <h3 className="mb-4">Data from api</h3>
-
-        <div className="filterAPI my-4">
-
-         <div className="container px-md-4">
-
-           <input type="text" value={this.state.inputValue} onChange={/*(e) => this.handleKeyDown(e),*/ (e) => this.updateInputValue(e)} placeholder="Suchbegriff..." className="w-100 w-md-50 p-1"  />
-
-         </div>
-
-        </div>
-
-     
-        {/*
+             {/*
         
         <button onClick={e => this.selectMenu()}>test</button>
 
         */}
 
-       <div className="mb-2">
+        <Header />
 
-           Seite:
+        <h3 className="mb-4 pt-6">Data from api</h3>
+        
 
-          <select className="form-control d-inline-block w-auto">
+        <div className="container mb-4">
 
-          {this.state.currentOptionsState.map((item, index) => (
-           <option key={index}>
-              {item}
-          </option>
-          ))}
+          <div className="row">
+
+            <div className="col-md-8 col-lg-9 order-2 order-md-1">
+
+            <div className="filterAPI">
+
+                  <input type="text" value={this.state.inputValue} onChange={/*(e) => this.handleKeyDown(e),*/ (e) => this.updateInputValue(e)} placeholder="Suchbegriff..." className="form-control w-100 w-md-50"  />
+           
+                </div>
+
+            </div>
+
+            <div className="col-md-4 col-lg-3 d-flex justify-content-md-end order-1 order-md-2 mb-2 mb-md-0">
+
+              <div className="d-flex align-items-center">
+
+                <span className="pr-4">Seite:</span>
+
+                <select className="form-control d-inline-block w-auto">
+
+                  {this.state.currentOptionsState.map((item, index) => (
+                  <option key={index}>
+                    {item}
+                  </option>
+                  ))}
+
+                </select>
+
+                </div>
+
+            </div>
+
+          </div>
+
+  
 
 
-          </select>
-
-       </div>
+        </div>
         
 
         {(!this.state.movies) ? '': <MoviesAPI data={this.state.movies} /> }
