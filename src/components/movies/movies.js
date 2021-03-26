@@ -1,10 +1,9 @@
 //import React, {useState} from 'react';
 import Card from '../cards/card.js';
-//import Row from '../bootstrap/row.js';
 import Col from '../bootstrap/col.js';
 
 
-const Movies = (props) => { 
+const MoviesAPI = (props) => { 
 
     return <div className="movie-container">
                  <div className="container">
@@ -25,4 +24,4 @@ const Movies = (props) => {
            
     }
   
-export default Movies;
+export default MoviesAPI;

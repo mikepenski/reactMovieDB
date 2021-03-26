@@ -3,12 +3,7 @@ import './assets/css/style.css';
 import './App.css';
 
 import Header from './components/header/header.js';
-
-//movies
-import MovieData from './components/movies/moviedata.js';
 import Movies from './components/movies/movies.js';
-import MoviesAPI from './components/movies/moviesapi.js';
-//import Filter from './components/filter/filterAPI.js';
 
 class App extends React.Component {
 
@@ -73,17 +68,32 @@ class App extends React.Component {
   
             }
 
+            console.log(this.state.movies);
+
         });
 
   }
 
+
+
+/*
+* reset button
+*/
+
   reset(e){
+
     this.setState({
-      movies: []
-    })
+      movies: [],
+      currentPageState: 1,
+    }, () => {
+      this.fetchPosts();
+    });
+
   }
 
-
+/*
+* search field / input 
+*/
 
   updateInputValue(e){
 
@@ -98,7 +108,47 @@ class App extends React.Component {
   });
 
   }
-  
+
+
+/*
+* Order select 
+*/
+
+  orderMovies(e) {
+  const order = e.target.value;
+
+  if (order === 'YEAR_OLD') {
+    this.setState({
+      movies: this.state.movies.sort((a, b) => a.Year - b.Year)
+    })
+  }
+
+  if (order === 'YEAR_NEW') {
+    this.setState({
+      movies: this.state.movies.sort((a, b) => b.Year - a.Year)
+    })
+  }
+
+  if (order === 'ASC') {
+    
+    this.setState({
+      movies: this.state.movies.sort((a, b) => a.Title.localeCompare(b.Title))
+    })
+  }
+
+  if (order === 'DESC') {
+    this.setState({
+      movies: this.state.movies.sort((a, b) => b.Title.localeCompare(a.Title))
+    })
+  }
+
+  console.log(this.state.movies);
+
+}
+
+/*
+* Pagination links back / forward 
+*/
 
   pagination(value){
 
@@ -117,6 +167,10 @@ class App extends React.Component {
 
   }
 
+/*
+* Select Page 
+*/
+
   setPage(e){
     this.setState({
       currentPageState: e.target.value
@@ -127,6 +181,9 @@ class App extends React.Component {
   }
 
  
+/*
+* fetch posts again
+*/
 
   fetchPosts(){
 
@@ -194,13 +251,24 @@ class App extends React.Component {
 
           <div className="row">
 
-            <div className="col-md-8 col-lg-9 order-2 order-md-1">
+            <div className="col-md-8 col-lg-6 order-2 order-md-1">
 
-            <div className="filterAPI">
+              <div className="filterAPI">
+                    <input type="text" value={this.state.inputValue} onChange={/*(e) => this.handleKeyDown(e),*/ (e) => this.updateInputValue(e)} placeholder="Suchbegriff..." className="form-control w-100 w-md-50"  />
+              </div>
 
-                  <input type="text" value={this.state.inputValue} onChange={/*(e) => this.handleKeyDown(e),*/ (e) => this.updateInputValue(e)} placeholder="Suchbegriff..." className="form-control w-100 w-md-50"  />
-           
-                </div>
+            </div>
+
+            <div className="col-md-4 col-lg-3 d-flex justify-content-md-end order-1 order-md-2 mb-2 mb-md-0">
+
+              <select onChange={e => this.orderMovies(e)} className="form-control d-inline-block w-auto">
+                <option value="YEAR_NEW">Neueste zuerst</option>
+                <option value="YEAR_OLD">Ältere zuerst</option>
+                <option value="ASC">A-Z</option>
+                <option value="DESC">Z-A</option>
+              
+
+              </select>
 
             </div>
 
@@ -208,31 +276,26 @@ class App extends React.Component {
 
               <div className="d-flex align-items-center">
 
-                <span className="pr-4">Seite(n):</span>
-
                 <select onChange={e => this.setPage(e)} className="form-control d-inline-block w-auto" value={this.state.currentPageState}>
 ´´
                   {this.state.currentOptionsState.map((item, index) => (
                   <option key={index} value={index + 1} >
-                    {item}
+                    Seite: {item}
                   </option>
                   ))}
 
                 </select>
 
-                </div>
+              </div>
 
             </div>
 
           </div>
 
-  
-
-
         </div>
         
 
-        {(!this.state.movies) ? '': <MoviesAPI data={this.state.movies} /> }
+        {(!this.state.movies) ? '': <Movies data={this.state.movies} /> }
 
         <div className="my-2">TotalResults: {this.state.totalResultsState}</div>
 
@@ -264,10 +327,14 @@ class App extends React.Component {
          <hr className="my-4" />
        </div>
 
-        <h3 className="mb-4">Data from js file</h3>
+       {/*
+
+ <h3 className="mb-4">Data from js file</h3>
 
         <Movies data={MovieData} />
        
+
+       */}
       </div>
       );
 

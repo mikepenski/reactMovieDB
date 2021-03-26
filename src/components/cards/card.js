@@ -1,55 +1,26 @@
 //import React, { useState } from 'react';
-import Rating from '../rating/rating.js';
+//import './card.css';
 
 const Card = (props) => {
 
     //let rating = props.data.rate;
 
-    //const { title, year, director, duration, rate} = props;
+    const { Title, Year, imdbID } = props.data;
 
     return <div className="card h-100 bg-dark text-white">
 
-       
                 <div className="card-body">
 
-                <div className="title mb-1">{props.data.title ? props.data.title : 'Title Lorem Ipsum'}</div>
-                <div className="year mb-1">{props.data.year}</div>
-                <div className="director mb-1">{props.data.director}</div>
-                <div className="duration mb-1">{props.data.duration}</div> 
-                <div className="rating">{props.data.rate}</div>
+                {props.data.Poster === "N/A" ? <div className="py-5">No Poster</div> : <a href={"https://www.imdb.com/title/" + imdbID} target="_blank" rel="noreferrer" className="cover"><img src={props.data.Poster} alt="Movie Poster" className="mb-2" width="250" /></a> }
 
-                   <Rating stars={props.data.rate} />
+                <div className="title mb-1">{Title}</div>
+                <div className="year mb-1">{Year}</div>
+                <div className="year mb-1">imdb ID: {imdbID}</div>
 
-
-                   {/*
-                       <select defaultValue={'DEFAULT'}>
-                   <option value="DEFAULT" disabled>See genres</option>
-                           </select>
-                   */}
-
-                   <ul className="mt-1">
-                        {props.data.genre.map((genre, index) => {
-                        return  <li key={index}>
-                            {genre}
-                        </li>
-                        })}
-                    </ul>
-
+                <a href={"https://www.imdb.com/title/" + imdbID} target="_blank" rel="noreferrer">more Infos</a>
+              
                 </div>
-       
 
-                {/*
-
-                 <img src={'../../logo.svg'} height="30" />
-
-                <p>
-                    <img src={starFull} />
-                </p>
-
-             
-                
-                */}
-             
            </div>
            
     }
