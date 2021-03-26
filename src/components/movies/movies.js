@@ -5,6 +5,8 @@ import Col from '../bootstrap/col.js';
 
 const MoviesAPI = (props) => { 
 
+    document.body.classList.remove('loading');
+
     return <div className="movie-container">
                  <div className="container">
 

@@ -4,6 +4,7 @@ import './App.css';
 
 import Header from './components/header/header.js';
 import Movies from './components/movies/movies.js';
+import Loader from './components/movies/loader.js';
 
 class App extends React.Component {
 
@@ -11,7 +12,7 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      inputValueState: 'spider man',
+      inputValueState: 'Batman',
       movies : [],
       currentPageState: 1,
       pagevalue: 0,
@@ -24,11 +25,15 @@ class App extends React.Component {
   state = {
     inputValueState: 'spider man',
     movies : [],
-    currentPageState: 1
+    currentPageState: 1,
+    fetchInProgress: false,
   }
-  
 
-  componentDidMount(){
+  componentDidMount(){ 
+
+    this.setState({
+      fetchInProgress: true,
+    })
 
     fetch('https://www.omdbapi.com/?s=' + this.state.inputValueState +'&apikey=81f86f7d&type=movie&page=' + this.state.currentPageState, {
         method: 'GET',
@@ -63,7 +68,8 @@ class App extends React.Component {
                 movies:movieData,
                 totalResultsState: movies.totalResults,
                 currentOptionsState: options,
-                totalPagesState: Math.ceil(movies.totalResults/10)
+                totalPagesState: Math.ceil(movies.totalResults/10),
+                fetchInProgress: false,
               })
   
             }
@@ -85,6 +91,7 @@ class App extends React.Component {
     this.setState({
       movies: [],
       currentPageState: 1,
+      inputValueState: 'Batman',
     }, () => {
       this.fetchPosts();
     });
@@ -180,20 +187,23 @@ class App extends React.Component {
 
   }
 
- 
+
 /*
 * fetch posts again
 */
 
   fetchPosts(){
 
+    this.setState({
+      fetchInProgress: true,
+    })
+
+
     fetch('https://www.omdbapi.com/?s=' + this.state.inputValueState +'&apikey=81f86f7d&type=movie&page=' + this.state.currentPageState, {
       method: 'GET',
       })
       .then(response => response.json())
       .then((movies) => {
-
-          console.log(movies)
 
           if(movies.Response !== "False"){
 
@@ -218,7 +228,16 @@ class App extends React.Component {
               movies:movieData,
               totalResultsState: movies.totalResults,
               currentOptionsState: options,
-              totalPagesState: Math.ceil(movies.totalResults/10)
+              totalPagesState: Math.ceil(movies.totalResults/10),
+              fetchInProgress: false,
+            })
+
+          } else {
+
+            this.setState({
+              //currentPageState: currentPage,
+              movies:[],
+              fetchInProgress: false,
             })
 
           }
@@ -254,7 +273,7 @@ class App extends React.Component {
             <div className="col-md-8 col-lg-6 order-2 order-md-1">
 
               <div className="filterAPI">
-                    <input type="text" value={this.state.inputValue} onChange={/*(e) => this.handleKeyDown(e),*/ (e) => this.updateInputValue(e)} placeholder="Suchbegriff..." className="form-control w-100 w-md-50"  />
+                    <input type="text" value={this.state.inputValueState} onChange={/*(e) => this.handleKeyDown(e),*/ (e) => this.updateInputValue(e)} placeholder="Suchbegriff eingeben..." className="form-control w-100 w-md-50"  />
               </div>
 
             </div>
@@ -267,7 +286,6 @@ class App extends React.Component {
                 <option value="ASC">A-Z</option>
                 <option value="DESC">Z-A</option>
               
-
               </select>
 
             </div>
@@ -293,19 +311,33 @@ class App extends React.Component {
           </div>
 
         </div>
+
+        <div className="container">
+
+         <strong className="mb-3 d-block text-left">Suchergebnisse für: {this.state.inputValueState}</strong> 
+
+        </div>
+        { this.state.fetchInProgress == true ? <Loader /> : <Movies data={this.state.movies} />  }
+        {this.state.movies.length === 0 && <p className="no-results">Leider keine Filme gefunden</p>}
+
+        {this.state.movies.length > 0 && <div className="my-2">TotalResults: {this.state.totalResultsState}</div>}
+
+
         
-
-        {(!this.state.movies) ? '': <Movies data={this.state.movies} /> }
-
-        <div className="my-2">TotalResults: {this.state.totalResultsState}</div>
-
-        <div className="my-2">Page: {this.state.currentPageState} / {this.state.totalPagesState}</div>
+        {this.state.movies.length > 0 && <div className="my-2">Page: {this.state.currentPageState} / {this.state.totalPagesState}</div>}
 
           <div className="row">
 
               <div className="col-4">
+                
 
-                {this.state.currentPageState > 1 ? <button className="btn btn-primary" onClick={e => this.pagination("minus")}>&#8249; <span className="d-none d-mdblock">Back</span></button> : <button className="btn btn-primary" disabled>&#8249; <span className="d-none d-mdblock">Back</span></button> }
+                
+              {this.state.movies.length === 0 ?
+              ''
+              :   [this.state.currentPageState > 1 ?  <button key="next-d-none" className="btn btn-primary" onClick={e => this.pagination("minus")}>&#8249; <span className="d-none d-mdblock">Back</span></button> 
+              : <button key="next-d" className="btn btn-primary" disabled>&#8249; <span className="d-none d-mdblock">Back</span></button> ]
+              }
+
 
               </div>
 
@@ -317,7 +349,8 @@ class App extends React.Component {
 
               <div className="col-4">
 
-              <button className="btn btn-primary" onClick={e => this.pagination("plus")}><span className="d-none d-mdblock">Next</span> &#8250;</button>
+              {this.state.movies.length > 0 &&  <button className="btn btn-primary" onClick={e => this.pagination("plus")}><span className="d-none d-mdblock">Next</span> &#8250;</button>}
+             
 
               </div>
 
@@ -327,14 +360,6 @@ class App extends React.Component {
          <hr className="my-4" />
        </div>
 
-       {/*
-
- <h3 className="mb-4">Data from js file</h3>
-
-        <Movies data={MovieData} />
-       
-
-       */}
       </div>
       );
 
