@@ -317,7 +317,7 @@ class App extends React.Component {
          <strong className="mb-3 d-block text-left">Suchergebnisse für: {this.state.inputValueState}</strong> 
 
         </div>
-        { this.state.fetchInProgress == true ? <Loader /> : <Movies data={this.state.movies} />  }
+        { this.state.fetchInProgress === true ? <Loader /> : <Movies data={this.state.movies} />  }
         {this.state.movies.length === 0 && <p className="no-results">Leider keine Filme gefunden</p>}
 
         {this.state.movies.length > 0 && <div className="my-2">TotalResults: {this.state.totalResultsState}</div>}
